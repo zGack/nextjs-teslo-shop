@@ -1,15 +1,20 @@
 import { CartList, OrderSummary } from "@/components/cart"
 import { ShopLayout } from "@/components/layouts"
+import { CartContext, CartProvider } from "@/context/cart"
 import { Box, Button, Card, CardContent, Divider, Grid, Typography } from "@mui/material"
+import { useContext } from "react"
 
 
 const index = () => {
+
+  const { cart } = useContext( CartContext );
+
   return (
     <ShopLayout title="Carrito - 3" pageDescription="Carrito de compras">
       <Typography variant="h1" component="h1">Carrito</Typography>
       <Grid container>
         <Grid item xs={12} sm={7}>
-          <CartList editable />
+          <CartList cart={cart} editable />
         </Grid>
         <Grid item xs={12} sm={5}>
           <Card className="summary-card">
