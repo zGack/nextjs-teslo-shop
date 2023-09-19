@@ -1,4 +1,3 @@
-import { NextPage } from "next";
 
 import { ShopLayout } from "@/components/layouts";
 import { Typography } from "@mui/material";
@@ -6,14 +5,14 @@ import { ProductList } from "@/components/products";
 import { useProducts } from "@/hooks";
 import { FullScreenLoading } from "@/components/ui";
 
-const Home: NextPage = () => {
+const Kids = () => {
 
-  const { products, isLoading } = useProducts('/products')
+  const { products, isLoading } = useProducts('/products?gender=kid')
 
   return (
-    <ShopLayout title={'Teslo-Shop - Home'} pageDescription={'Teslo Shop Page'}>
-      <Typography variant="h1" component='h1'>Tienda</Typography>
-      <Typography variant="h2" sx={{mb: 1}}>Todos los productos</Typography>
+    <ShopLayout title={'Teslo-Shop - Kids'} pageDescription={'Teslo Shop Kids Page'}>
+      <Typography variant="h1" component='h1'>Kids</Typography>
+      <Typography variant="h2" sx={{mb: 1}}>Todos los productos para kids</Typography>
 
       {
         isLoading 
@@ -25,4 +24,4 @@ const Home: NextPage = () => {
   )
 }
 
-export default Home;
+export default Kids;
