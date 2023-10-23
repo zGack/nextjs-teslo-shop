@@ -5,6 +5,7 @@ import { IUser } from '@/interfaces';
 import { tesloApi } from '@/api';
 import Cookies from 'js-cookie';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 interface Props {
   children: JSX.Element | JSX.Element[]
@@ -23,6 +24,7 @@ const AUTH_INITIAL_STATE: AuthState = {
 export const AuthProvider: FC<PropsWithChildren<Props>> = ({ children }) => {
 
   const [state, dispatch] = useReducer(authReducer, AUTH_INITIAL_STATE );
+  const router = useRouter();
 
   useEffect(() => {
     checkToken();
@@ -30,6 +32,8 @@ export const AuthProvider: FC<PropsWithChildren<Props>> = ({ children }) => {
 
   const checkToken = async() => {
     
+    if ( !Cookies.get('token') ) return;
+
     try {
       const { data } = await tesloApi.get('/user/validate-jwt');
       const { token, user } = data;
@@ -57,6 +61,12 @@ export const AuthProvider: FC<PropsWithChildren<Props>> = ({ children }) => {
     } catch (error) {
       return false; 
     }
+  }
+
+  const logoutUser = () => {
+    Cookies.remove('token');
+    Cookies.remove('cart');
+    router.reload();
   }
 
   const registerUser = async( name: string, email: string, password: string): Promise<{hasError: boolean, message?: string}> => {
@@ -91,6 +101,7 @@ export const AuthProvider: FC<PropsWithChildren<Props>> = ({ children }) => {
 
       // Methods
       loginUser,
+      logoutUser,
       registerUser
     }}>
      { children }

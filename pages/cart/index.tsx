@@ -1,13 +1,24 @@
+import { useContext, useEffect } from "react"
+import { useRouter } from "next/router"
+
+import { Box, Button, Card, CardContent, Divider, Grid, Typography } from "@mui/material"
 import { CartList, OrderSummary } from "@/components/cart"
 import { ShopLayout } from "@/components/layouts"
-import { CartContext, CartProvider } from "@/context/cart"
-import { Box, Button, Card, CardContent, Divider, Grid, Typography } from "@mui/material"
-import { useContext } from "react"
+import { CartContext } from "@/context/cart"
 
+const CartPage = () => {
 
-const index = () => {
+  const { cart, isLoaded, numberOfItems } = useContext( CartContext );
+  const router = useRouter()
 
-  const { cart } = useContext( CartContext );
+  useEffect(() => {
+    if ( isLoaded && !numberOfItems ){
+      router.replace('/cart/empty');
+    }
+  
+  }, [isLoaded, numberOfItems, router])
+
+  if ( !numberOfItems ) return null;
 
   return (
     <ShopLayout title="Carrito - 3" pageDescription="Carrito de compras">
@@ -25,7 +36,12 @@ const index = () => {
               <OrderSummary />
 
               <Box sx={{mt: 3}}>
-                <Button color="secondary" className="circular-btn" fullWidth>
+                <Button 
+                  color="secondary" 
+                  className="circular-btn" 
+                  fullWidth
+                  href="/checkout/address"
+                >
                   Checkout
                 </Button>
               </Box>
@@ -38,4 +54,4 @@ const index = () => {
   )
 }
 
-export default index
+export default CartPage;

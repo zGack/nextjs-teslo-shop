@@ -1,21 +1,32 @@
+import { useContext } from 'react'
 import NextLink from 'next/link'
+
 import { CartList, OrderSummary } from "@/components/cart"
 import { ShopLayout } from "@/components/layouts"
 import { Box, Button, Card, CardContent, Divider, Grid, Link, Typography } from "@mui/material"
+import { CartContext } from '@/context/cart'
+import { countries } from '@/utils'
 
 
 const SummaryPage = () => {
+
+  const { cart, numberOfItems, shippingAddress } = useContext( CartContext );
+
+  if ( !shippingAddress ) return <></>;
+
+  const { firstName, lasttName, address, address2, city, country, phone, zip } = shippingAddress;
+
   return (
     <ShopLayout title="Resumen de la orden" pageDescription="resumen de la orden">
       <Typography variant="h1" component="h1">Resumen de la orden</Typography>
       <Grid container>
         <Grid item xs={12} sm={7}>
-          <CartList />
+          <CartList cart={cart} />
         </Grid>
         <Grid item xs={12} sm={5}>
           <Card className="summary-card">
             <CardContent>
-              <Typography variant="h2">Resumen (3 productos)</Typography>
+              <Typography variant="h2">{`Resumen (${(numberOfItems === 1)? '1 producto': `${numberOfItems} productos`} )`}</Typography>
               <Divider sx={{my: 1}} />
 
               <Box display='flex' justifyContent='space-between'>
@@ -27,11 +38,11 @@ const SummaryPage = () => {
                 </NextLink>
               </Box>  
 
-              <Typography>Sebastian Mena</Typography>
-              <Typography>Cra 68b # 25 - 79</Typography>
-              <Typography>Cali, Valle del cauca</Typography>
-              <Typography>Colombia</Typography>
-              <Typography>3174105445</Typography>
+              <Typography>{firstName} {lasttName}</Typography>
+              <Typography>{ address }{ address2 ? `, ${address2}`:'' }</Typography>
+              <Typography>{city}, {zip}</Typography>
+              <Typography>{countries.find( c => ( c.code === country ))?.name}</Typography>
+              <Typography>{phone}</Typography>
 
               <Divider sx={{my: 1}} />
 
@@ -50,7 +61,6 @@ const SummaryPage = () => {
                   Confirmar Orden
                 </Button>
               </Box>
-
             </CardContent>
           </Card>
         </Grid>
