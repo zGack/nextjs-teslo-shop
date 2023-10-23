@@ -42,9 +42,8 @@ const RegisterPage = () => {
       return;
     }
 
-    // TODO: navegar a la pantalla en la que se encontraba el usr
-    router.replace('/');
-
+    const destination = router.query.p?.toString() || '/';
+    router.replace(destination);
   }
 
   return (
@@ -110,7 +109,7 @@ const RegisterPage = () => {
               </Button>
             </Grid>
             <Grid item xs={12} display='flex' justifyContent='end'>
-              <NextLink href='/auth/auth' legacyBehavior passHref>
+              <NextLink href={ router.query.p ? `/auth/login?p=${router.query.p}` : '/auth/login'} legacyBehavior passHref>
                 <Link underline='always'>
                   Already have an account?
                 </Link>

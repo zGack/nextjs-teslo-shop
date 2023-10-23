@@ -1,8 +1,8 @@
+import type { NextApiRequest, NextApiResponse } from 'next'
+
 import { db } from '@/database'
 import { User } from '@/models'
-import type { NextApiRequest, NextApiResponse } from 'next'
-import bcrypt from 'bcryptjs';
-import { jwt, validations } from '@/utils';
+import { jwt } from '@/utils';
 
 type Data = 
   | { message: string }
@@ -10,8 +10,8 @@ type Data =
     token: string;
     user: {
       email: string;
-      name: string;
-      role: string;
+      name:  string;
+      role:  string;
     }
   }
 
